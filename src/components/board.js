@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import FormNewList from './form-new-list/form-new-list'
+import FormNewList from './formNewList/FormNewList'
+import Column from './Column'
 
 export default class Board extends Component {
 
@@ -9,9 +10,14 @@ export default class Board extends Component {
 
   render(){
     return (
-      <div className='row'>
-        <FormNewList />
-      </div>
+      <div className="flex-row">
+        <div className="columns">
+          <Column />
+        </div>  
+        <div className='row-inner'>
+          <FormNewList />
+        </div>
+      </div>  
     )    
   }
 }

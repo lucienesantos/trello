@@ -1,4 +1,5 @@
 .App {
+  padding: 10px;
 }
 
 .App-logo {
@@ -20,8 +21,13 @@
   color: #61dafb;
 }
 
-.row {
-  padding: 10px;
+.row-inner {
+  padding: 12px;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
 }
 
 @keyframes App-logo-spin {
