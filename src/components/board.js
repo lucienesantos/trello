@@ -1,23 +1,48 @@
-import React, {Component} from 'react';
-import FormNewList from './formNewList/FormNewList'
-import Column from './Column'
+import React, {Component} from "react";
+import FormNewColumn from "./FormNewColumn";
+import Column from "./Column";
+import styled from "styled-components";
 
-export default class Board extends Component {
+import {connect} from "react-redux";
 
-  state = { 
-    colums: [], 
-  }
+const Div = styled.div`
+  padding: 0 8px;
+  display: flex;
+  flex-direction: row;
+`;
 
-  render(){
+class Board extends Component {
+  state = {
+    colums: []
+  };
+
+  loadColums = () => {
+    return this.props.columns.map(element => {
+      return (
+        <Column
+          id={element.id}
+          title={element.title}
+          key={element.id}
+          cards={element.cards}
+        />
+      );
+    });
+  };
+
+  render() {
     return (
       <div className="flex-row">
-        <div className="columns">
-          <Column />
-        </div>  
-        <div className='row-inner'>
-          <FormNewList />
+        <Div> {this.props.columns ? this.loadColums() : null} </Div>{" "}
+        <div>
+          <FormNewColumn />
         </div>
-      </div>  
-    )    
+      </div>
+    );
   }
 }
+
+const mapStatetoProps = state => ({
+  columns: state.columnsManager.columns
+});
+
+export default connect(mapStatetoProps)(Board);
