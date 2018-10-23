@@ -1,61 +1,60 @@
-import React, {Component} from 'react';
-import { FaPlus } from "react-icons/fa";
-import styled from 'styled-components'
+import React, {Component} from "react";
+import Card from "./Card";
+import FormNewCard from "./FormNewCard";
+import {ColumnDiv, Header, Textarea, TitleColumn, Ul} from "./core";
+import {editColumn} from "../actions";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
 
-const ColumnDiv = styled.div`
-  width: 260px;
-  height: 95px;
-  background-color: #dfe3e6;
-  border-radius: 3px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  max-height: 100%;
-  position: relative;
-  white-space: normal;
-  padding: 5px !important;
-`;
+class Column extends Component {
+  state = {editing: false, columnTitle: this.props.title};
 
-const Header = styled.div`
-  height: 60px;
-  padding: 6px;
-`;
+  loadCards = () => {
+    return this.props.cards.map(element => {
+      return <Card key={element.name} name={element.name} />;
+    });
+  };
 
-const TitleColumn = styled.h2`
-  padding-right: 68px;
-  font-size: 20px;
-  line-height: 24px;
-  margin: 0 0 8px;
-  font-weight: bold;
-`;
+  handleClick = () => {
+    this.setState({editing: !this.state.editing});
+  };
 
-const LinkAdd = styled.a`
-  background-color: rgba(0,0,0,0);
-  font-family: Helvetica Neue,Arial,Helvetica,sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  color: #6b808c;
-  padding: 5px !important;
-`;
+  handleChangeTitle = event => {
+    this.setState({columnTitle: event.target.value});
+  };
 
-const SpanPlus = styled.span`
-  top: 2px;
-  right: 2px;
-  position: relative;
-`; 
+  saveTitle = () => {
+    this.setState({editing: false});
+    this.props.editColumn({id: this.props.id, title: this.state.columnTitle});
+  };
 
-export default class Column extends Component {
-
-  render(){
+  render() {
     return (
-      <ColumnDiv>
+      <ColumnDiv id={this.props.id}>
         <Header>
-          <TitleColumn>Primeira coluna</TitleColumn>
+          {this.state.editing ? (
+            <Textarea
+              value={this.state.columnTitle}
+              onChange={e => this.handleChangeTitle(e)}
+              onBlur={this.saveTitle}
+            />
+          ) : (
+            <TitleColumn onClick={this.handleClick}>
+              {this.state.columnTitle}
+            </TitleColumn>
+          )}
         </Header>
-        <LinkAdd>
-          <span><SpanPlus><FaPlus /></SpanPlus>Adicionar um cartão</span>
-        </LinkAdd>
+        <FormNewCard columnTitle={this.props.title} />
+        <Ul>{this.loadCards()}</Ul>
       </ColumnDiv>
-    )  
+    );
   }
 }
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({editColumn}, dispatch);
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Column);
