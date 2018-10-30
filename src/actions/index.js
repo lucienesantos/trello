@@ -13,3 +13,8 @@ export const newCard = card => ({
   type: "NEW_CARD",
   newCard: card
 });
+
+export const editCard = card => ({
+  type: "EDIT_CARD",
+  editedCard: card
+});

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {newColumn} from "../actions";
+import * as Util from "../utils";
 
 //Style
 const Form = styled.form`
@@ -45,7 +46,7 @@ const ButtonSave = styled.button`
   box-shadow: 0 1px 0 0 #3f6f21;
   border: none;
   display: inline-block;
-  padding: 6px 12px;
+  padding: 6px 11px;
   margin-bottom: 1px;
   font-size: 14px;
   font-weight: 700;
@@ -62,7 +63,7 @@ const ButtonSave = styled.button`
   user-select: none;
   background-image: none;
   border-radius: 4px;
-  width: 130px;
+  width: 138px;
 `;
 
 const LinkAdd = styled.a`
@@ -100,9 +101,10 @@ class FormNewColumn extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    alert(this.state.newNameList);
-    this.props.newColumn(this.state.newNameList); // Dispatch a action anewColum
-    this.setState({newNameList: ""});
+    if (!Util.empty(this.state.newNameList)) {
+      this.props.newColumn(this.state.newNameList); // Dispatch a action anewColum
+      this.setState({newNameList: ""});
+    }
   };
 
   handleClickAdd = () => {

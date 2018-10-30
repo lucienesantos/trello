@@ -81,7 +81,7 @@ const ButtonSave = styled.button`
   user-select: none;
   background-image: none;
   border-radius: 4px;
-  width: 130px;
+  width: 138px;
 `;
 
 class FormNewCard extends Component {

@@ -1,5 +1,10 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import styled from "styled-components";
+import {TitleColumnNormal, TextareaEdit} from "./core";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import {editCard} from "../actions";
+import * as Util from "../utils";
 
 const Li = styled.li`
   overflow: hidden;
@@ -9,7 +14,6 @@ const Li = styled.li`
   background-color: #fff;
   border-radius: 3px;
   box-shadow: 0 1px 0 rgba(9, 45, 66, 0.25);
-  cursor: pointer;
   display: block;
   margin-bottom: 8px;
   max-width: 300px;
@@ -25,8 +29,51 @@ const Li = styled.li`
   white-space: normal;
 `;
 
-export default class Card extends Component {
+class Card extends Component {
+  state = {editing: false, name: this.props.name};
+
+  handleClick = () => {
+    this.setState({editing: true});
+  };
+
+  handleChangeTitle = e => {
+    this.setState({name: e.target.value});
+  };
+
+  saveName = () => {
+    this.setState({editing: false});
+    if (!Util.empty(this.state.name)) {
+      var cardEditing = {
+        id: this.props.id,
+        name: this.state.name,
+        column_id: this.props.column_id
+      };
+      this.props.editCard(cardEditing);
+    }
+  };
+
   render() {
-    return <Li key={this.props.name}>{this.props.name}</Li>;
+    return (
+      <Li key={this.props.name}>
+        {this.state.editing ? (
+          <TextareaEdit
+            value={this.state.name}
+            onChange={e => this.handleChangeTitle(e)}
+            onBlur={this.saveName}
+          />
+        ) : (
+          <TitleColumnNormal onClick={this.handleClick}>
+            <p>{this.props.name}</p>
+          </TitleColumnNormal>
+        )}
+      </Li>
+    );
   }
 }
+
+const mapDispatchToProps = dispatch => bindActionCreators({editCard}, dispatch);
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Card);

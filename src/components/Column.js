@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import Card from "./Card";
 import FormNewCard from "./FormNewCard";
-import {ColumnDiv, Header, Textarea, TitleColumn, Ul} from "./core";
+import {ColumnDiv, Header, TextareaEdit, TitleColumn, Ul} from "./core";
 import {editColumn} from "../actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
@@ -11,7 +11,14 @@ class Column extends Component {
 
   loadCards = () => {
     return this.props.cards.map(element => {
-      return <Card key={element.name} name={element.name} />;
+      return (
+        <Card
+          key={element.name}
+          id={element.id}
+          name={element.name}
+          column_id={this.props.id}
+        />
+      );
     });
   };
 
@@ -33,7 +40,7 @@ class Column extends Component {
       <ColumnDiv id={this.props.id}>
         <Header>
           {this.state.editing ? (
-            <Textarea
+            <TextareaEdit
               value={this.state.columnTitle}
               onChange={e => this.handleChangeTitle(e)}
               onBlur={this.saveTitle}
