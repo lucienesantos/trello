@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import FormNewColumn from "./FormNewColumn";
 import Column from "./Column";
 import styled from "styled-components";
+import {DragDropContext} from "react-beautiful-dnd";
 
 import {connect} from "react-redux";
 
@@ -29,14 +30,35 @@ class Board extends Component {
     });
   };
 
+  onDragEnd = result => {
+    //TODO reorder new column
+  };
+
   render() {
     return (
-      <div className="flex-row">
-        <Div> {this.props.columns ? this.loadColums() : null} </Div>{" "}
-        <div>
-          <FormNewColumn />
+      <DragDropContext onDragEnd={this.onDragEnd}>
+        <div className="flex-row">
+          <Div> {this.props.columns ? this.loadColums() : null} </Div>{" "}
+          {/* <Column
+            id={1}
+            title="First column"
+            key="2"
+            cards={[
+              {
+                id: 1,
+                name: "First litter card 1.1"
+              },
+              {
+                id: 2,
+                name: "First litter card 1.2"
+              }
+            ]}
+          /> */}
+          <div>
+            <FormNewColumn />
+          </div>
         </div>
-      </div>
+      </DragDropContext>
     );
   }
 }

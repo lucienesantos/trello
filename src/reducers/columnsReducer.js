@@ -54,19 +54,20 @@ export const columnsReducer = (state = initialState, action) => {
     case "EDIT_CARD":
       return {
         ...state,
-        columns: state.columns.reduce((acc, column) => {
-          if (column.id === action.editedCard.column_id) {
-            column.cards.reduce((newAcc, card) => {
-              if (card.id === action.editedCard.id) {
-                card.name = action.editedCard.name;
-              }
-              newAcc.push(card);
-              column.cards = newAcc;
-            }, []);
-          }
-          acc.push(column);
-          return acc;
-        }, [])
+        columns: state.columns
+        // columns: state.columns.reduce((acc, column) => {
+        //   if (column.id === action.editedCard.column_id) {
+        //     column.cards.reduce((newAcc, card) => {
+        //       if (card.id === action.editedCard.id) {
+        //         card.name = action.editedCard.name;
+        //       }
+        //       newAcc.push(card);
+        //       column.cards = newAcc;
+        //     }, []);
+        //   }
+        //   acc.push(column);
+        //   return acc;
+        // }, [])
       };
     case "EDIT_COLUMN":
       return {

@@ -4,17 +4,19 @@ import FormNewCard from "./FormNewCard";
 import {ColumnDiv, Header, TextareaEdit, TitleColumn, Ul} from "./core";
 import {editColumn} from "../actions";
 import {bindActionCreators} from "redux";
+import {Droppable} from "react-beautiful-dnd";
 import {connect} from "react-redux";
 
 class Column extends Component {
   state = {editing: false, columnTitle: this.props.title};
 
   loadCards = () => {
-    return this.props.cards.map(element => {
+    return this.props.cards.map((element, index) => {
       return (
         <Card
           key={element.name}
           id={element.id}
+          index={index}
           name={element.name}
           column_id={this.props.id}
         />
@@ -52,7 +54,14 @@ class Column extends Component {
           )}
         </Header>
         <FormNewCard columnTitle={this.props.title} />
-        <Ul>{this.loadCards()}</Ul>
+        <Droppable droppableId={this.props.id.toString()}>
+          {provided => (
+            <Ul ref={provided.innerRef} {...provided.droppableProps}>
+              {this.loadCards()}
+              {provided.placeholder}
+            </Ul>
+          )}
+        </Droppable>
       </ColumnDiv>
     );
   }

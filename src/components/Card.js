@@ -5,6 +5,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {editCard} from "../actions";
 import * as Util from "../utils";
+import {Draggable} from "react-beautiful-dnd";
 
 const Li = styled.li`
   overflow: hidden;
@@ -54,19 +55,27 @@ class Card extends Component {
 
   render() {
     return (
-      <Li key={this.props.name}>
-        {this.state.editing ? (
-          <TextareaEdit
-            value={this.state.name}
-            onChange={e => this.handleChangeTitle(e)}
-            onBlur={this.saveName}
-          />
-        ) : (
-          <TitleColumnNormal onClick={this.handleClick}>
-            <p>{this.props.name}</p>
-          </TitleColumnNormal>
+      <Draggable draggableId={this.props.id} index={this.props.index}>
+        {provided => (
+          <Li
+            key={this.props.name}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}>
+            {this.state.editing ? (
+              <TextareaEdit
+                value={this.state.name}
+                onChange={e => this.handleChangeTitle(e)}
+                onBlur={this.saveName}
+              />
+            ) : (
+              <TitleColumnNormal onClick={this.handleClick}>
+                <p>{this.props.name}</p>
+              </TitleColumnNormal>
+            )}
+          </Li>
         )}
-      </Li>
+      </Draggable>
     );
   }
 }
