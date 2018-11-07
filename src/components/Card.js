@@ -55,7 +55,9 @@ class Card extends Component {
 
   render() {
     return (
-      <Draggable draggableId={this.props.id} index={this.props.index}>
+      <Draggable
+        draggableId={this.props.id.toString()}
+        index={this.props.index}>
         {provided => (
           <Li
             key={this.props.name}
